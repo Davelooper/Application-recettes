@@ -1,0 +1,8 @@
+.vscode
+*.zip
+*.log
+.DS_Store
+.idea/
+*.iml
+target/
+bin/
