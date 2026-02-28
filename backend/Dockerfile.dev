@@ -1,0 +1,9 @@
+# Passe en 25 pour correspondre à ton compilateur VS Code
+FROM eclipse-temurin:25-jdk-jammy 
+
+WORKDIR /app
+
+# On ne fait pas de 'mvn install' ici ! 
+# On utilise directement les fichiers compilés par VS Code
+# Le point d'entrée est le dossier target/classes
+ENTRYPOINT ["java", "-cp", "target/classes:target/lib/*", "com.davelooper.backend.BackendApplication"]
