@@ -1,0 +1,28 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-002
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: ingredients
+      changes:
+        - createTable:
+            tableName: ingredients
+            columns:
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: ingredient_name
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_url
+                  type: VARCHAR(255)

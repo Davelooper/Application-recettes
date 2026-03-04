@@ -1,0 +1,25 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-001
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: units
+      changes:
+        - createTable:
+            tableName: units
+            columns:
+              - column:
+                  name: unit_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: unit_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
