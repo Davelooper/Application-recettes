@@ -1,0 +1,15 @@
+services:
+  app:
+    # On reste sur une image Debian légère optimisée pour le devcontainer
+    # Elle est très petite (~200MB compressée) avant d'ajouter Java
+    image: mcr.microsoft.com/devcontainers/base:debian-12
+    
+    # On garde le conteneur en vie indéfiniment
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+    volumes:
+      # Montage des sources : obligatoire pour que VS Code voit vos fichiers
+      - .:/workspaces/Application-recettes:cached
+
+    # Configuration réseau pour voir la base de données 'db' définie dans le docker-compose.dev.yml
+    # Pas besoin de network_mode: service:db car docker-compose met tout le monde dans le même réseau par défaut
