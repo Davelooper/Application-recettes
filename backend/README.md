@@ -3,6 +3,11 @@
 Ce dossier contient le backend Spring Boot de l'application. 
 L'environnement de développement Docker est conçu pour utiliser directement les fichiers compilés sur votre machine hôte ("Hot Reload"), quel que soit votre éditeur de code (VS Code, IntelliJ, Eclipse, etc.).
 
+## 🚀 Aide-mémoire des commandes
+
+Pour une liste complète des commandes de développement (Compilation, Tests, Docker, DB...), consultez le fichier :
+👉 **[CHEATSHEET.md](../CHEATSHEET.md)** situé à la racine du projet.
+
 ## 🚀 Comment ça marche ?
 
 Le conteneur Docker de développement (`Dockerfile.dev`) ne compile pas le code lui-même. Au lieu de cela :
@@ -41,6 +46,36 @@ Une fois les dépendances copiées et le projet compilé, lancez simplement Dock
 docker compose -f docker-compose.dev.yml up
 ```
 
+## 🔄 Gestion des dépendances (Ajout/Mise à jour)
+
+Lorsque vous ajoutez une dépendance dans le `pom.xml` (ex: `springdoc-openapi` pour Swagger), le conteneur ne la voit pas automatiquement car il utilise une copie locale des `.jar` située dans `target/lib`.
+
+Pour appliquer les changements :
+
+1.  **Copiez les nouvelles dépendances** :
+    ```bash
+    # Depuis le dossier /backend
+    ./mvnw dependency:copy-dependencies -DoutputDirectory=target/lib
+    # OU via le Makefile à la racine :
+    # make deps
+    ```
+
+2.  **Redémarrez le conteneur API** :
+    ```bash
+    docker compose -f docker-compose.dev.yml restart api
+    # OU via le Makefile à la racine :
+    # make restart
+    ```
+
+## 📄 Documentation API (Swagger UI)
+
+Une fois l'application lancée, la documentation OpenAPI est accessible ici :
+
+*   **Swagger UI** : [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+*   **JSON OpenAPI** : [http://localhost:8080/api-docs](http://localhost:8080/api-docs)
+
+*Note : Ces chemins sont configurés dans `application.properties`.*
+
 ## 🔄 Cycle de développement
 
 1. **Modifiez un fichier `.java`** dans votre éditeur préféré.
@@ -48,4 +83,4 @@ docker compose -f docker-compose.dev.yml up
 3. Le conteneur détecte les changements via le volume monté.
 4. Si *Spring Boot DevTools* est actif, l'application redémarre automatiquement. Sinon, redémarrez le conteneur manuellement.
 
-*Note : Si vous ajoutez une nouvelle dépendance Maven dans `pom.xml`, n'oubliez pas de relancer la commande de copie des dépendances (voir section Pré-requis).*
+*Note : Si vous ajoutez une nouvelle dépendance Maven dans `pom.xml`, n'oubliez pas de relancer la commande de copie des dépendances (voir la section "Gestion des dépendances").*
