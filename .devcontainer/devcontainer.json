@@ -9,6 +9,12 @@
     "workspaceFolder": "/workspaces/Application-recettes",
   
     "features": {
+      "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+        "moby": true,
+        "installDockerBuildx": true,
+        "version": "latest",
+        "dockerDashComposeVersion": "v2"
+      },
       "ghcr.io/devcontainers/features/java:1": {
         "version": "25", // Votre version demandée
         "installMaven": "true",
