@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/004-create-recipes-table.yaml
   - include:
       file: db/changelog/005-create-recipe-steps-table.yaml
+  - include:
+      file: db/changelog/006-create-recipe-ingredients-table.yaml
