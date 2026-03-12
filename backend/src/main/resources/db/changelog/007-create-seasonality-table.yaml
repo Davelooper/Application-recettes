@@ -1,0 +1,37 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-007
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: seasonality
+      changes:
+        - createTable:
+            tableName: seasonality
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: period_name
+                  type: VARCHAR(50)
+                  constraints:
+                    unique: true
+              - column:
+                  name: start_month
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_month
+                  type: INT
+                  constraints:
+                    nullable: false
+        - sql:
+            sql: ALTER TABLE seasonality ADD CONSTRAINT check_season_months CHECK (start_month >= 1 AND start_month <= 12 AND end_month >= 1 AND end_month <= 12)
