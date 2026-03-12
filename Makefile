@@ -11,7 +11,7 @@ RESET=\033[0m
 # Note : Ces commandes contrôlent l'environnement Docker depuis l'HÔTE.
 # Pour les commandes de développement Java (compilation, tests...), voir le fichier CHEATSHEET.md
 
-.PHONY: help up down stop restart logs shell clean db-tables db-shell db-console
+.PHONY: help up down stop restart logs db-logs shell clean db-tables db-shell db-console
 
 help: ## Affiche cette aide
 	@echo "$(YELLOW)Commandes Docker disponibles pour le projet :$(RESET)"
@@ -28,6 +28,9 @@ up: ## 3. Démarre l'environnement (base de données + API) en arrière-plan
 
 logs: ## Affiche les logs de l'API en direct
 	$(DC) logs -f api
+
+db-logs: ## Affiche les logs de la base de données PostgreSQL
+	$(DC) logs -f db
 
 # restart: compile ## Recompile et redémarre uniquement l'API (pour prendre en compte les changements de code)
 # 	@echo "$(YELLOW)Redémarrage de l'API...$(RESET)"
