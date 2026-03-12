@@ -6,10 +6,10 @@ databaseChangeLog:
         - onFail: MARK_RAN
           not:
             - tableExists:
-                tableName: recette
+                tableName: recipes
       changes:
         - createTable:
-            tableName: recette
+            tableName: recipes
             columns:
               - column:
                   name: id
@@ -19,14 +19,14 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: utilisateur_id
+                  name: user_id
                   type: BIGINT
                   constraints:
                     nullable: false
-                    foreignKeyName: fk_recette_utilisateur
-                    references: utilisateur(id)
+                    foreignKeyName: fk_recipes_users
+                    references: users(id)
               - column:
-                  name: titre
+                  name: title
                   type: VARCHAR(255)
                   constraints:
                     nullable: false
@@ -34,23 +34,23 @@ databaseChangeLog:
                   name: description
                   type: TEXT
               - column:
-                  name: portions
+                  name: servings
                   type: INT
               - column:
-                  name: difficulte
+                  name: difficulty
                   type: INT
               - column:
                   name: image_url
                   type: TEXT
               - column:
-                  name: temps_prep_min
+                  name: prep_time_minutes
                   type: INT
               - column:
-                  name: temps_cuisson_min
+                  name: cook_time_minutes
                   type: INT
               - column:
-                  name: date_creation
+                  name: created_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
         - sql:
-            sql: ALTER TABLE recette ADD CONSTRAINT check_difficulte_range CHECK (difficulte >= 1 AND difficulte <= 5)
+            sql: ALTER TABLE recipes ADD CONSTRAINT check_difficulty_range CHECK (difficulty >= 1 AND difficulty <= 5)

@@ -6,10 +6,10 @@ databaseChangeLog:
         - onFail: MARK_RAN
           not:
             - tableExists:
-                tableName: utilisateur
+                tableName: users
       changes:
         - createTable:
-            tableName: utilisateur
+            tableName: users
             columns:
               - column:
                   name: id
@@ -25,12 +25,12 @@ databaseChangeLog:
                     unique: true
                     nullable: false
               - column:
-                  name: mot_de_passe_hash
+                  name: password_hash
                   type: TEXT
                   constraints:
                     nullable: false
               - column:
-                  name: nom_utilisateur
+                  name: username
                   type: VARCHAR(100)
                   constraints:
                     nullable: false
@@ -41,6 +41,6 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: date_creation
+                  name: created_at
                   type: TIMESTAMP
                   defaultValueComputed: CURRENT_TIMESTAMP
