@@ -1,0 +1,46 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-003
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: utilisateur
+      changes:
+        - createTable:
+            tableName: utilisateur
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: mot_de_passe_hash
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nom_utilisateur
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(50)
+                  defaultValue: "standard"
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_creation
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
