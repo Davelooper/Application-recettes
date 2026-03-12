@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-004
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: recette
+      changes:
+        - createTable:
+            tableName: recette
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: utilisateur_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_recette_utilisateur
+                    references: utilisateur(id)
+              - column:
+                  name: titre
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: portions
+                  type: INT
+              - column:
+                  name: difficulte
+                  type: INT
+              - column:
+                  name: image_url
+                  type: TEXT
+              - column:
+                  name: temps_prep_min
+                  type: INT
+              - column:
+                  name: temps_cuisson_min
+                  type: INT
+              - column:
+                  name: date_creation
+                  type: TIMESTAMP
+                  defaultValueComputed: CURRENT_TIMESTAMP
+        - sql:
+            sql: ALTER TABLE recette ADD CONSTRAINT check_difficulte_range CHECK (difficulte >= 1 AND difficulte <= 5)
