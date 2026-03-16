@@ -2,6 +2,7 @@ package com.davelooper.backend.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -95,8 +96,8 @@ class IngredientRepositoryTest {
       // Given
       Seasonality winter = seasonalityRepository
           .save(Seasonality.builder().periodName("Hiver").startMonth(12).endMonth(2).build());
-      Ingredient leek = ingredientRepository
-          .save(Ingredient.builder().name("Poireau").seasonalities(Set.of(winter)).build());
+      Ingredient leek = ingredientRepository.save(Ingredient.builder().name("Poireau")
+          .seasonalities(new HashSet<>(Set.of(winter))).build());
 
       // When: On vide les saisons de l'ingrédient
       leek.getSeasonalities().clear();
