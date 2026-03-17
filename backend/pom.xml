@@ -59,6 +59,11 @@
       <version>${lombok.version}</version>
       <optional>true</optional>
     </dependency>
+    <dependency>
+      <groupId>net.datafaker</groupId>
+      <artifactId>datafaker</artifactId>
+      <version>2.5.4</version>
+    </dependency>
 
     <dependency>
       <groupId>org.mapstruct</groupId>

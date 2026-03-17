@@ -1,6 +1,5 @@
 package com.davelooper.backend.entities;
 
-import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -8,10 +7,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -40,8 +39,6 @@ public class RecipeStep {
   @Column(name = "step_number", nullable = false)
   private Integer stepNumber;
 
-  @Lob
-  @Basic(fetch = FetchType.LAZY)
   @Column(name = "description", nullable = false, columnDefinition = "TEXT")
   private String description;
 }
