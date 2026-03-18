@@ -10,7 +10,7 @@ import com.davelooper.backend.validation.PasswordMatches;
  * Ce que l'on reçoit du client (ex: formulaire d'inscription)
  */
 @PasswordMatches
-public record UserRequestDTO(
+public record RegisterRequestDTO(
     @NotBlank(message = "L'email est requis")
     @Email(message = "Format d'email invalide")
     String email,

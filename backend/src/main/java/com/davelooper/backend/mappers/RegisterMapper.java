@@ -5,17 +5,17 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.Mappings;
 
-import com.davelooper.backend.dtos.UserRequestDTO;
-import com.davelooper.backend.dtos.UserResponseDTO;
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+import com.davelooper.backend.dtos.RegisterResponseDTO;
 import com.davelooper.backend.entities.User;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface UserMapper {
+public interface RegisterMapper {
 
     // "Prends l'objet User et crée un UserResponseDTO avec"
     // Comme les noms de champs sont identiques (email, username...), 
     // MapStruct fait le lien tout seul.
-    UserResponseDTO toResponse(User user);
+    RegisterResponseDTO toResponse(User user);
 
     // "Prends le DTO et crée une entité User"
     @Mappings({
@@ -24,5 +24,5 @@ public interface UserMapper {
         @Mapping(target = "role", ignore = true), // Sécurité : on ne laisse pas l'user choisir son rôle
         @Mapping(target = "createdAt", ignore = true) // Géré par Hibernate (@CreationTimestamp)
     })
-    User toEntity(UserRequestDTO request);
+    User toEntity(RegisterRequestDTO request);
 }

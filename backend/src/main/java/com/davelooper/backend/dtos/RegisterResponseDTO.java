@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Ce que l'on renvoie au client (Données sécurisées)
  */
-public record UserResponseDTO(
+public record RegisterResponseDTO(
     Long id,
     String email,
     String username,

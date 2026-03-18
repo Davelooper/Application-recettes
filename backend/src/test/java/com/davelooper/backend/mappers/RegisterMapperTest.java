@@ -8,21 +8,21 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 
-import com.davelooper.backend.dtos.UserRequestDTO;
-import com.davelooper.backend.dtos.UserResponseDTO;
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+import com.davelooper.backend.dtos.RegisterResponseDTO;
 import com.davelooper.backend.entities.User;
 
-@DisplayName("Unit Tests - UserMapper")
-class UserMapperTest {
+@DisplayName("Unit Tests - RegisterMapper")
+class RegisterMapperTest {
 
   // On récupère l'instance générée par MapStruct
-  private final UserMapper mapper = Mappers.getMapper(UserMapper.class);
+  private final RegisterMapper mapper = Mappers.getMapper(RegisterMapper.class);
 
   @Test
   @DisplayName("Doit transformer une Requête en Entité (Entrée)")
   void shouldMapRequestToEntity() {
     // GIVEN
-    UserRequestDTO request = new UserRequestDTO(
+    RegisterRequestDTO request = new RegisterRequestDTO(
         "chef@cuisine.fr", 
         "Ratatouille", 
         "password123",
@@ -59,7 +59,7 @@ class UserMapperTest {
   
 
     // WHEN
-    UserResponseDTO response = mapper.toResponse(entity);
+    RegisterResponseDTO response = mapper.toResponse(entity);
 
     // THEN
     assertThat(response.id()).isEqualTo(entity.getId());

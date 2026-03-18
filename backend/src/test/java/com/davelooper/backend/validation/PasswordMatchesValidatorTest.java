@@ -6,7 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.davelooper.backend.dtos.UserRequestDTO;
+import com.davelooper.backend.dtos.RegisterRequestDTO;
 
 class PasswordMatchesValidatorTest {
 
@@ -21,7 +21,7 @@ class PasswordMatchesValidatorTest {
     @DisplayName("Doit être valide quand les mots de passe sont identiques")
     void shouldBeValidWhenPasswordsMatch() {
         // GIVEN
-        UserRequestDTO dto = new UserRequestDTO("test@mail.fr", "UserTest", "secret123", "secret123");
+        RegisterRequestDTO dto = new RegisterRequestDTO("test@mail.fr", "UserTest", "secret123", "secret123");
 
         // WHEN
         boolean isValid = validator.isValid(dto, null); // On passe null car on n'utilise pas le ConstraintValidatorContext
@@ -34,7 +34,7 @@ class PasswordMatchesValidatorTest {
     @DisplayName("Ne doit pas être valide quand les mots de passe sont différents")
     void shouldBeInvalidWhenPasswordsDoNotMatch() {
         // GIVEN
-        UserRequestDTO dto = new UserRequestDTO("test@mail.fr", "UserTest", "secret123", "motdepassedifferent");
+        RegisterRequestDTO dto = new RegisterRequestDTO("test@mail.fr", "UserTest", "secret123", "motdepassedifferent");
 
         // WHEN
         boolean isValid = validator.isValid(dto, null);

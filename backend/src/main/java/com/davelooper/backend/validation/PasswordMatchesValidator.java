@@ -1,17 +1,18 @@
 package com.davelooper.backend.validation;
 
-import com.davelooper.backend.dtos.UserRequestDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, UserRequestDTO> {
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+
+public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches, RegisterRequestDTO> {
 
     @Override
     public void initialize(PasswordMatches constraintAnnotation) {
     }
 
     @Override
-    public boolean isValid(UserRequestDTO dto, ConstraintValidatorContext context) {
+    public boolean isValid(RegisterRequestDTO dto, ConstraintValidatorContext context) {
         if (dto == null) {
             return true; 
         }
