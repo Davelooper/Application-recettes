@@ -1,6 +1,11 @@
 package com.davelooper.backend.entities;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
 import jakarta.persistence.Basic;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,15 +15,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "recipes")
@@ -60,6 +63,14 @@ public class Recipe {
 
     @Column(name = "cook_time_minutes")
     private Integer cookTimeMinutes;
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<RecipeIngredient> recipeIngredients = new ArrayList<>();
+
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<RecipeStep> recipeSteps = new ArrayList<>();
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
