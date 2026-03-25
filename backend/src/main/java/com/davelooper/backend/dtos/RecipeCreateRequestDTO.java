@@ -6,9 +6,23 @@ import java.util.List;
 /**
  * DTO pour la création d'une nouvelle recette.
  */
-public record RecipeCreateRequestDTO(String title, String description, Integer servings,
-    Integer difficulty, Integer prepTimeMinutes, Integer cookTimeMinutes, Long authorId,
-    List<RecipeIngredientRequestDTO> ingredients, List<RecipeStepRequestDTO> steps) {
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+public record RecipeCreateRequestDTO(
+    String title, 
+    String description, 
+    Integer servings,
+    Integer difficulty, 
+    Integer prepTimeMinutes, 
+    Integer cookTimeMinutes, 
+    Long authorId,
+    @NotNull(message = "La liste des ingrédients est obligatoire.")
+    @NotEmpty(message = "La liste des ingrédients ne peut pas être vide.")
+    List<RecipeIngredientRequestDTO> ingredients, 
+    @NotNull(message = "La liste des étapes est obligatoire.")
+    @NotEmpty(message = "La liste des étapes ne peut pas être vide.")
+    List<RecipeStepRequestDTO> steps) {
   /**
    * DTO interne pour l'ajout d'ingrédients lors de la création.
    */
