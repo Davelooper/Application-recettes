@@ -12,7 +12,7 @@ import com.davelooper.backend.entities.User;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RegisterMapper {
 
-    // "Prends l'objet User et crée un UserResponseDTO avec"
+    // "Prends l'objet User et crée un RegisterRequestDTO avec"
     // Comme les noms de champs sont identiques (email, username...), 
     // MapStruct fait le lien tout seul.
     RegisterResponseDTO toResponse(User user);
