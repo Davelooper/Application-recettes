@@ -6,10 +6,12 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +22,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+
 import com.davelooper.backend.dtos.RecipeCreateRequestDTO;
 import com.davelooper.backend.dtos.RecipeFullResponseDTO;
 import com.davelooper.backend.dtos.RecipeSummaryResponseDTO;
@@ -103,9 +106,9 @@ class RecipeServiceTest {
   @DisplayName("Doit créer et persister une recette avec ingrédients et étapes")
   void createOneShouldCreateRecipeWithRelations() {
     RecipeCreateRequestDTO request = new RecipeCreateRequestDTO("Soup", "Hot", 2, 1, 10, 20, 7L,
-        List.of(
-            new RecipeCreateRequestDTO.RecipeIngredientRequestDTO(3L, BigDecimal.valueOf(1.5), 4L)),
-        List.of(new RecipeCreateRequestDTO.RecipeStepRequestDTO(1, "Mix everything")));
+      List.of(
+        new RecipeCreateRequestDTO.RecipeIngredientRequestDTO(3L, BigDecimal.valueOf(1.5), 4L)),
+      List.of(new RecipeCreateRequestDTO.RecipeStepRequestDTO(1, "Mix everything")));
 
     User author = User.builder().id(7L).build();
     Ingredient ingredient = Ingredient.builder().id(3L).name("Carrot").build();
@@ -122,7 +125,7 @@ class RecipeServiceTest {
     when(recipeRepository.save(any(Recipe.class))).thenReturn(savedEntity);
     when(recipeMapper.toFullResponseDTO(savedEntity)).thenReturn(responseDto);
 
-    RecipeFullResponseDTO result = recipeService.createOne(request);
+    RecipeFullResponseDTO result = recipeService.createOne(request, null);
 
     ArgumentCaptor<Recipe> captor = ArgumentCaptor.forClass(Recipe.class);
     verify(recipeRepository).save(captor.capture());
@@ -147,7 +150,7 @@ class RecipeServiceTest {
 
     when(userRepository.findById(999L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> recipeService.createOne(request))
+    assertThatThrownBy(() -> recipeService.createOne(request, null))
         .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("User not found with id: 999");
     verify(recipeRepository, never()).save(any(Recipe.class));
@@ -167,7 +170,7 @@ class RecipeServiceTest {
     when(recipeMapper.toEntity(request)).thenReturn(mappedEntity);
     when(ingredientRepository.findById(55L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> recipeService.createOne(request))
+    assertThatThrownBy(() -> recipeService.createOne(request, null))
         .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("Ingredient not found with id: 55");
     verify(recipeRepository, never()).save(any(Recipe.class));
@@ -189,7 +192,7 @@ class RecipeServiceTest {
     when(ingredientRepository.findById(55L)).thenReturn(Optional.of(ingredient));
     when(unitRepository.findById(4L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> recipeService.createOne(request))
+    assertThatThrownBy(() -> recipeService.createOne(request, null))
         .isInstanceOf(NoSuchElementException.class)
         .hasMessageContaining("Unit not found with id: 4");
     verify(recipeRepository, never()).save(any(Recipe.class));
