@@ -31,7 +31,7 @@ public class UserSeeder implements Seeder {
           .email("admin@test.com")
           .username("admin")
           .passwordHash("admin123")
-          .role("admin")
+          .role(User.Role.ADMIN)
           .build());
 
       // 2. Création de 10 utilisateurs aléatoires
@@ -39,7 +39,7 @@ public class UserSeeder implements Seeder {
           .email(faker.internet().emailAddress())
           .username(faker.internet().username())
           .passwordHash("password_hash_" + i)
-          .role("standard")
+          .role(User.Role.STANDARD)
           .build()).collect(Collectors.toList());
 
       userRepository.saveAll(randomUsers);
