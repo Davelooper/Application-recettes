@@ -30,7 +30,16 @@ Swagger UI est fourni via `springdoc-openapi`.
 - Swagger UI : http://localhost:8080/swagger-ui.html
 - Spec OpenAPI (JSON) : http://localhost:8080/api-docs
 
-## Demarrage rapide (mode demo, utile à toute personne voulant tester l'application)
+## Fichiers d'environnement
+
+Le projet utilise plusieurs fichiers `.env` selon le contexte :
+
+- `.env.demo` : mode demo versionne, pret a l'emploi pour tester l'application rapidement.
+- `.env.dev` : mode developpement Docker et Dev Container, versionne pour eviter une configuration manuelle minimale.
+- `.env.prod` : mode prod-like / deploiement, non versionne.
+- `.env.example` : exemple minimal de variables, utile comme base de personnalisation.
+
+## Demarrage rapide (mode demo)
 
 Ce mode est versionne, pret a l'emploi, et charge automatiquement des fixtures via le profil Spring `demo`.
 Il est pense pour parcourir rapidement l'application sans manipuler de secrets locaux.
@@ -48,13 +57,16 @@ docker compose -f docker-compose.demo.yml down
 ## Mode developpement (Docker)
 
 Le mode dev charge `.env.dev`, monte le code en volume et garde l'API dans un flux confortable pour travailler.
-Ce mode suppose que `backend/target/classes` et `backend/target/lib` existent deja (voir `CHEATSHEET.md`).
+Ce mode est aussi celui utilise par le Dev Container VS Code.
+Il suppose que `backend/target/classes` et `backend/target/lib` existent deja (voir `CHEATSHEET.md`).
 
 ```bash
 make up
 make logs
 make down
 ```
+
+Si vous ouvrez le projet dans un Dev Container, la configuration s'appuie egalement sur `.env.dev`.
 
 ## Mode prod-like / deploiement
 

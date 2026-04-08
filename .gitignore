@@ -10,3 +10,4 @@ bin/
 .env.*
 !.env.example
 !.env.demo
+!.env.dev
