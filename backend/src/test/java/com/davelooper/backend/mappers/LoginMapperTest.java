@@ -1,13 +1,10 @@
 package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-
 import com.davelooper.backend.dtos.LoginResponseDTO;
 import com.davelooper.backend.entities.User;
 
@@ -20,14 +17,9 @@ public class LoginMapperTest {
   @DisplayName("Doit transformer une Entité en Réponse (Sortie)")
   void shouldMapEntityToResponse() {
     LocalDateTime now = LocalDateTime.now();
-    User entity = User.builder()
-        .id(1L)
-        .email("test@davelooper.com")
-        .username("DaveLooper")
+    User entity = User.builder().id(1L).email("test@davelooper.com").username("DaveLooper")
         .passwordHash("$2a$12$hashedpassword") // Donnée sensible
-        .role("admin")
-        .createdAt(now)
-        .build();
+        .role(User.Role.ADMIN).createdAt(now).build();
 
     LoginResponseDTO response = mapper.toResponse(entity, "test");
 
