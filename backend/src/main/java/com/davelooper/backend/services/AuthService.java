@@ -18,6 +18,7 @@ public class AuthService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final LoginMapper loginMapper;
+  private final AccessTokenService accessTokenService;
 
   public LoginResponseDTO login(LoginRequestDTO request) {
     User user = userRepository.findByEmail(request.email())
@@ -27,7 +28,7 @@ public class AuthService {
       throw new IllegalArgumentException("Email ou mot de passe incorrect.");
     }
 
-    return loginMapper.toResponse(user, "token");
+    return loginMapper.toResponse(user, accessTokenService.generateToken(user));
   }
 
   // public RefreshResponseDTO refresh(RefreshRequestDTO request) {
