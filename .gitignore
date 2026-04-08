@@ -6,3 +6,7 @@
 *.iml
 target/
 bin/
+.env
+.env.*
+!.env.example
+!.env.demo
