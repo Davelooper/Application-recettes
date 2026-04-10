@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HomeController {
-    @GetMapping("/")
-    public String home() {
-        return "Bienvenue dans l'application de recettes !";
-    }
+  @GetMapping("/")
+  public String home() {
+    return "Bienvenue dans l'application de recettes !";
+  }
 }

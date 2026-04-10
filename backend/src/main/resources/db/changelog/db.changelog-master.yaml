@@ -3,3 +3,17 @@ databaseChangeLog:
       file: db/changelog/001-create-unit-table.yaml
   - include:
       file: db/changelog/002-create-ingredient-table.yaml
+  - include:
+      file: db/changelog/003-create-users-table.yaml
+  - include:
+      file: db/changelog/004-create-recipes-table.yaml
+  - include:
+      file: db/changelog/005-create-recipe-steps-table.yaml
+  - include:
+      file: db/changelog/006-create-recipe-ingredients-table.yaml
+  - include:
+      file: db/changelog/007-create-seasonality-table.yaml
+  - include:
+      file: db/changelog/008-create-ingredient-seasons-table.yaml
+  - include:
+      file: db/changelog/009-create-ratings-table.yaml

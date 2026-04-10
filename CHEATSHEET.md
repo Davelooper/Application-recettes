@@ -14,7 +14,8 @@ Ces commandes sont à exécuter dans un terminal **à la racine du projet**.
 | **Mettre à jour les dépendances** | `cd backend && ./mvnw dependency:copy-dependencies -DoutputDirectory=target/lib` | Copie les jars dans `target/lib`. Indispensable après modif de `pom.xml`. |
 | **Compiler le code** | `cd backend && ./mvnw compile` | Compile uniquement les sources `.java` (rapide). Utile pour le Hot Reload. |
 | **Nettoyer le projet** | `cd backend && ./mvnw clean` | Supprime le dossier `target/`. |
-| **Lancer les tests** | `cd backend && ./mvnw test` | Exécute les tests unitaires. |
+| **Lancer les tests** | `cd backend && ./mvnw test` | Exécute tous les tests unitaires et de repository. |
+| **Lancer un test spécifique** | `cd backend && ./mvnw test -Dtest=NomDuFichierTest` | Exécute uniquement les tests d'une classe (ex: `RecipeStepRepositoryTest`). |
 | **Packager l'application** | `cd backend && ./mvnw package -DskipTests` | Crée le JAR final exécutable. |
 | **Vérifier le code (QA)** | `cd backend && ./mvnw verify` | Lance tests + checkstyle + formatage. |
 | **Formater le code** | `cd backend && ./mvnw spotless:apply` | Applique le formatage automatique (Google Java Format). |

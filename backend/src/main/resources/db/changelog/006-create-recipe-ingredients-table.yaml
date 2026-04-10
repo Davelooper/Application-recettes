@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 20260304-006
+      author: david
+      preConditions:
+        - onFail: MARK_RAN
+          not:
+            - tableExists:
+                tableName: recipe_ingredients
+      changes:
+        - createTable:
+            tableName: recipe_ingredients
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: recipe_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_recipe_ingredients_recipes
+                    references: recipes(id)
+              - column:
+                  name: ingredient_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_recipe_ingredients_ingredients
+                    references: ingredients(ingredient_id)
+              - column:
+                  name: unit_id
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_recipe_ingredients_units
+                    references: units(unit_id)
+              - column:
+                  name: quantity
+                  type: DECIMAL(10, 2)

@@ -1,86 +1,100 @@
-# Environnement de Développement Backend
+# Environnement de developpement backend
 
-Ce dossier contient le backend Spring Boot de l'application. 
-L'environnement de développement Docker est conçu pour utiliser directement les fichiers compilés sur votre machine hôte ("Hot Reload"), quel que soit votre éditeur de code (VS Code, IntelliJ, Eclipse, etc.).
+Ce dossier contient le backend Spring Boot de l'application.
+L'environnement de developpement Docker est concu pour utiliser directement les fichiers compiles sur votre machine hote, quel que soit votre editeur de code (VS Code, IntelliJ, Eclipse, etc.).
 
-## 🚀 Aide-mémoire des commandes
+## Aide-memoire des commandes
 
-Pour une liste complète des commandes de développement (Compilation, Tests, Docker, DB...), consultez le fichier :
-👉 **[CHEATSHEET.md](../CHEATSHEET.md)** situé à la racine du projet.
+Pour une liste complete des commandes de developpement (compilation, tests, Docker, DB...), consultez [CHEATSHEET.md](/home/david/Projets_Persos/Application-recettes/CHEATSHEET.md).
 
-## 🚀 Comment ça marche ?
+## Comment ca marche ?
 
-Le conteneur Docker de développement (`Dockerfile.dev`) ne compile pas le code lui-même. Au lieu de cela :
-1. **Dossier monté** : Le dossier `backend` actuel est monté dans le conteneur (volume Docker).
-2. **Compilation locale** : Votre IDE ou votre commande Maven compile les fichiers `.java` en `.class` dans le dossier local `target/classes`.
-3. **Exécution** : Le conteneur exécute directement ces classes compilées.
+Le conteneur Docker de developpement (`Dockerfile.dev`) ne compile pas le code lui-meme. A la place :
 
-Cela permet un cycle de développement très rapide sans avoir à reconstruire l'image Docker à chaque modification de code.
+1. Le dossier `backend` est monte dans le conteneur.
+2. Votre IDE ou Maven compile les fichiers `.java` en `.class` dans `target/classes`.
+3. Le conteneur execute directement ces classes compilees.
 
-## 🛠️ Pré-requis (Installation initiale)
+Cela permet un cycle de developpement rapide sans reconstruire l'image Docker a chaque modification.
 
-Avant de lancer le conteneur, vous devez préparer les fichiers nécessaires sur votre machine.
+## Fichier d'environnement
 
-### 1. Télécharger les dépendances
-Le conteneur a besoin des bibliothèques Spring Boot (fichiers `.jar`) dans un dossier spécifique.
+Le mode developpement Docker, y compris le Dev Container VS Code, utilise le fichier `.env.dev` situe a la racine du projet.
+Le mode demo utilise `.env.demo` et le mode prod-like utilise `.env.prod`.
 
-**Exécutez cette commande une seule fois** (ou à chaque modification du `pom.xml`) :
+## Pre-requis
+
+Avant de lancer le conteneur, preparez les fichiers necessaires sur votre machine.
+
+### 1. Telecharger les dependances
+
+Le conteneur a besoin des bibliotheques Spring Boot (`.jar`) dans un dossier specifique.
+
+Executez cette commande une seule fois, ou a chaque modification du `pom.xml` :
 
 ```bash
-# Depuis le dossier /backend
 ./mvnw dependency:copy-dependencies -DoutputDirectory=target/lib
 ```
 
 ### 2. Compiler le projet
-Le conteneur s'attend à trouver les classes compilées dans `target/classes`.
 
-*   **Avec un IDE (VS Code, IntelliJ, Eclipse...)** : Assurez-vous que votre IDE compile automatiquement le projet (souvent via "Build Project" ou "Auto-build") et que la sortie est dirigée vers `target/classes` (configuration standard Maven).
-*   **En ligne de commande** : Si vous n'utilisez pas d'IDE, lancez `mvn compile`.
+Le conteneur s'attend a trouver les classes compilees dans `target/classes`.
 
-## ▶️ Lancer l'application
+- Avec un IDE, assurez-vous que la compilation automatique alimente bien `target/classes`.
+- En ligne de commande, lancez `./mvnw compile`.
 
-Une fois les dépendances copiées et le projet compilé, lancez simplement Docker Compose depuis la racine du projet :
+## Lancer l'application
+
+Une fois les dependances copiees et le projet compile, lancez Docker Compose depuis la racine du projet :
 
 ```bash
-# Depuis la racine /workspaces/Application-recettes
+make up
+```
+
+Ou, si vous preferez la commande brute :
+
+```bash
 docker compose -f docker-compose.dev.yml up
 ```
 
-## 🔄 Gestion des dépendances (Ajout/Mise à jour)
+## Gestion des dependances
 
-Lorsque vous ajoutez une dépendance dans le `pom.xml` (ex: `springdoc-openapi` pour Swagger), le conteneur ne la voit pas automatiquement car il utilise une copie locale des `.jar` située dans `target/lib`.
+Lorsque vous ajoutez une dependance dans le `pom.xml`, le conteneur ne la voit pas automatiquement car il utilise une copie locale des `.jar` situee dans `target/lib`.
 
 Pour appliquer les changements :
 
-1.  **Copiez les nouvelles dépendances** :
-    ```bash
-    # Depuis le dossier /backend
-    ./mvnw dependency:copy-dependencies -DoutputDirectory=target/lib
-    # OU via le Makefile à la racine :
-    # make deps
-    ```
+1. Copiez les nouvelles dependances :
 
-2.  **Redémarrez le conteneur API** :
-    ```bash
-    docker compose -f docker-compose.dev.yml restart api
-    # OU via le Makefile à la racine :
-    # make restart
-    ```
+```bash
+./mvnw dependency:copy-dependencies -DoutputDirectory=target/lib
+```
 
-## 📄 Documentation API (Swagger UI)
+2. Redemarrez le conteneur API :
 
-Une fois l'application lancée, la documentation OpenAPI est accessible ici :
+```bash
+make restart
+```
 
-*   **Swagger UI** : [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-*   **JSON OpenAPI** : [http://localhost:8080/api-docs](http://localhost:8080/api-docs)
+Ou, si vous preferez la commande brute :
 
-*Note : Ces chemins sont configurés dans `application.properties`.*
+```bash
+docker compose -f docker-compose.dev.yml restart api
+```
 
-## 🔄 Cycle de développement
+## Documentation API (Swagger UI)
 
-1. **Modifiez un fichier `.java`** dans votre éditeur préféré.
-2. **Compilez** (Sauvegardez si votre IDE compile à la volée, ou lancez `mvn compile`).
-3. Le conteneur détecte les changements via le volume monté.
-4. Si *Spring Boot DevTools* est actif, l'application redémarre automatiquement. Sinon, redémarrez le conteneur manuellement.
+Une fois l'application lancee, la documentation OpenAPI est accessible ici :
 
-*Note : Si vous ajoutez une nouvelle dépendance Maven dans `pom.xml`, n'oubliez pas de relancer la commande de copie des dépendances (voir la section "Gestion des dépendances").*
+- Swagger UI : http://localhost:8080/swagger-ui.html
+- JSON OpenAPI : http://localhost:8080/api-docs
+
+Ces chemins sont configures dans `application.properties`.
+
+## Cycle de developpement
+
+1. Modifiez un fichier `.java`.
+2. Compilez avec votre IDE ou avec `./mvnw compile`.
+3. Le conteneur detecte les changements via le volume monte.
+4. Si Spring Boot DevTools est actif, l'application redemarre automatiquement. Sinon, redemarrez le conteneur manuellement.
+
+Si vous ajoutez une nouvelle dependance Maven dans `pom.xml`, relancez aussi la copie des dependances.
