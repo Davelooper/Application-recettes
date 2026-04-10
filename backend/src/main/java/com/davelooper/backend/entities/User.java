@@ -2,6 +2,8 @@ package com.davelooper.backend.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,6 +25,11 @@ import org.hibernate.annotations.CreationTimestamp;
 @Builder
 public class User {
 
+  public enum Role {
+    ADMIN,
+    STANDARD
+  }
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
@@ -38,8 +45,9 @@ public class User {
   private String username;
 
   @Column(name = "role", nullable = false, length = 50)
+  @Enumerated(EnumType.STRING)
   @Builder.Default
-  private String role = "standard";
+  private Role role = Role.STANDARD;
 
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp

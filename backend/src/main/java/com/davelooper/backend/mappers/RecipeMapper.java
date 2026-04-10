@@ -1,18 +1,19 @@
 package com.davelooper.backend.mappers;
 
+import com.davelooper.backend.dtos.RecipeCreateRequestDTO;
+import com.davelooper.backend.dtos.RecipeFullResponseDTO;
+import com.davelooper.backend.dtos.RecipeSummaryResponseDTO;
+import com.davelooper.backend.dtos.RecipeUpdateRequestDTO;
+import com.davelooper.backend.entities.Recipe;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-import com.davelooper.backend.dtos.RecipeCreateRequestDTO;
-import com.davelooper.backend.dtos.RecipeFullResponseDTO;
-import com.davelooper.backend.dtos.RecipeSummaryResponseDTO;
-import com.davelooper.backend.dtos.RecipeUpdateRequestDTO;
-import com.davelooper.backend.entities.Recipe;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+@Mapper(
+    componentModel = MappingConstants.ComponentModel.SPRING,
     uses = {RecipeIngredientMapper.class, RecipeStepMapper.class})
 public interface RecipeMapper {
 
@@ -43,11 +44,9 @@ public interface RecipeMapper {
   void updateEntityFromRequest(RecipeUpdateRequestDTO request, @MappingTarget Recipe recipe);
 
   default Integer calculateTotalTime(Recipe recipe) {
-    if (recipe == null)
-      return 0;
+    if (recipe == null) return 0;
     int prep = (recipe.getPrepTimeMinutes() != null) ? recipe.getPrepTimeMinutes() : 0;
     int cook = (recipe.getCookTimeMinutes() != null) ? recipe.getCookTimeMinutes() : 0;
     return prep + cook;
   }
-
 }

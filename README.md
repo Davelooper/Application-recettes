@@ -4,71 +4,87 @@ Application de gestion de recettes.
 
 ## Statut
 
-- Backend : fondations en place (modèle de données, persistance, migrations DB, validation, mapping, tests).
-- API REST : en cours de développement.
-- Frontend : à venir (Angular) une fois l’API stabilisée.
+- Backend : fondations en place (modele de donnees, persistance, migrations DB, validation, mapping, tests).
+- API REST : en cours de developpement.
+- Frontend : a venir (Angular) une fois l'API stabilisee.
 
-## Fonctionnalités déjà en place (backend)
+## Fonctionnalites deja en place (backend)
 
-- Modèle de données : recettes, ingrédients, utilisateurs, relations recette↔ingrédients.
-- Migrations PostgreSQL versionnées avec Liquibase.
-- Validation automatique des requêtes (Jakarta Validation) + règles personnalisées (ex: confirmation du mot de passe).
-- Mapping Entités/DTO via MapStruct.
-- Tests unitaires + tests d’intégration DB avec Testcontainers.
+- Modele de donnees : recettes, ingredients, utilisateurs, relations recette<->ingredients.
+- Migrations PostgreSQL versionnees avec Liquibase.
+- Validation automatique des requetes (Jakarta Validation) + regles personnalisees.
+- Mapping Entites/DTO via MapStruct.
+- Tests unitaires + tests d'integration DB avec Testcontainers.
 
 ## Architecture
 
 Monorepo :
 
 - `backend/` : Spring Boot 4.0.3 (Java 25), API + persistance.
-- `frontend/` : prévu (Angular).
+- `frontend/` : prevu (Angular).
 
 ## Documentation API (Swagger / OpenAPI)
 
 Swagger UI est fourni via `springdoc-openapi`.
 
 - Swagger UI : http://localhost:8080/swagger-ui.html
-- Spéc OpenAPI (JSON) : http://localhost:8080/api-docs
+- Spec OpenAPI (JSON) : http://localhost:8080/api-docs
 
-## Démarrage rapide (Docker — recommandé pour tester)
+## Fichiers d'environnement
 
-Ce mode construit l’application dans l’image Docker (aucune compilation locale requise).
+Le projet utilise plusieurs fichiers `.env` selon le contexte :
 
-```bash
-docker compose -f docker-compose.yml up --build
-```
+- `.env.demo` : mode demo versionne, pret a l'emploi pour tester l'application rapidement.
+- `.env.dev` : mode developpement Docker et Dev Container, versionne pour eviter une configuration manuelle minimale.
+- `.env.prod` : mode prod-like / deploiement, non versionne.
+- `.env.example` : exemple minimal de variables, utile comme base de personnalisation.
 
-Arrêt :
+## Demarrage rapide (mode demo)
 
-```bash
-docker compose -f docker-compose.yml down
-```
-
-## Mode développement (Docker)
-
-Le Makefile utilise `docker-compose.dev.yml` et monte le code en volume. Ce mode suppose que `backend/target/classes` et `backend/target/lib` existent déjà (voir `CHEATSHEET.md`).
+Ce mode est versionne, pret a l'emploi, et charge automatiquement des fixtures via le profil Spring `demo`.
+Il est pense pour parcourir rapidement l'application sans manipuler de secrets locaux.
 
 ```bash
-make up        # Lance la base de données et l'API (dev)
-make logs      # Suit les logs en temps réel
-make down      # Stoppe et supprime les conteneurs
+docker compose -f docker-compose.demo.yml up --build -d
 ```
 
-Test rapide :
+Arret :
 
 ```bash
-curl http://localhost:8080/
+docker compose -f docker-compose.demo.yml down
 ```
 
-## Développement / Tests (local)
+## Mode developpement (Docker)
 
-Les commandes Maven sont récapitulées dans `CHEATSHEET.md`.
+Le mode dev charge `.env.dev`, monte le code en volume et garde l'API dans un flux confortable pour travailler.
+Ce mode est aussi celui utilise par le Dev Container VS Code.
+Il suppose que `backend/target/classes` et `backend/target/lib` existent deja (voir `CHEATSHEET.md`).
+
+```bash
+make up
+make logs
+make down
+```
+
+Si vous ouvrez le projet dans un Dev Container, la configuration s'appuie egalement sur `.env.dev`.
+
+## Mode prod-like / deploiement
+
+Le fichier `docker-compose.yml` reste reserve a un usage prod-like, alimente par `.env.prod` non versionne.
+
+```bash
+docker compose --env-file .env.prod -f docker-compose.yml up --build -d
+```
+
+## Developpement / Tests (local)
+
+Les commandes Maven sont recapitulees dans `CHEATSHEET.md`.
 
 ```bash
 cd backend
 
-./mvnw test              # Lance tous les tests
-./mvnw verify            # Tests + checkstyle + vérifications qualité
-./mvnw spotless:apply    # Formatage (Google Java Format)
-./mvnw spring-boot:run   # Lance l'API hors Docker
+./mvnw test
+./mvnw verify
+./mvnw spotless:apply
+./mvnw spring-boot:run
 ```

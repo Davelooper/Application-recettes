@@ -1,44 +1,41 @@
 {
-    "name": "Java + DB (DevContainer)",
-    "dockerComposeFile": [
-      "../docker-compose.dev.yml",
-      "docker-compose.devcontainer.yml"
-    ],
-    // Nous lançons les services 'app' (votre IDE) et 'db' (la base de données)
-    "service": "app",
-    "workspaceFolder": "/workspaces/Application-recettes",
-  
-    "features": {
-      "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
-        "moby": true,
-        "installDockerBuildx": true,
-        "version": "latest",
-        "dockerDashComposeVersion": "v2"
-      },
-      "ghcr.io/devcontainers/features/java:1": {
-        "version": "25", // Votre version demandée
-        "installMaven": "true",
-        "jdkDistro": "ms"
-      }
+  "name": "Java + DB (DevContainer)",
+  "dockerComposeFile": [
+    "../docker-compose.dev.yml",
+    "docker-compose.devcontainer.yml"
+  ],
+  "service": "app",
+  "runServices": ["db", "app"],
+  "workspaceFolder": "/workspaces/Application-recettes",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": true,
+      "installDockerBuildx": true,
+      "version": "latest",
+      "dockerDashComposeVersion": "v2"
     },
-  
-    "customizations": {
-      "vscode": {
-        "extensions": [
-          "vscjava.vscode-java-pack",
-          "cweijan.vscode-postgresql-client2"
-        ],
-        "settings": {
-          "java.configuration.runtimes": [
-            {
-              "name": "JavaSE-25",
-              "path": "/usr/local/sdkman/candidates/java/25.0.2-ms",
-              "default": true
-            }
-          ]
-        }
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "25",
+      "installMaven": "true",
+      "jdkDistro": "ms"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "vscjava.vscode-java-pack",
+        "cweijan.vscode-postgresql-client2"
+      ],
+      "settings": {
+        "java.configuration.runtimes": [
+          {
+            "name": "JavaSE-25",
+            "path": "/usr/local/sdkman/candidates/java/25.0.2-ms",
+            "default": true
+          }
+        ]
       }
-    },
-  
-    "remoteUser": "vscode"
-  }
+    }
+  },
+  "remoteUser": "vscode"
+}

@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:16
+    container_name: ${DB_CONTAINER_NAME:-postgres_db_demo}
+    env_file:
+      - .env.demo
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres_data_demo:/var/lib/postgresql/data
+
+  api:
+    build: ./backend
+    container_name: ${API_CONTAINER_NAME:-spring_api_demo}
+    env_file:
+      - .env.demo
+    ports:
+      - "${API_PORT:-8080}:8080"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data_demo:

@@ -13,7 +13,9 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = PasswordMatchesValidator.class)
 @Documented
 public @interface PasswordMatches {
-    String message() default "Les mots de passe ne correspondent pas";
-    Class<?>[] groups() default {};
-    Class<? extends Payload>[] payload() default {};
+  String message() default "Les mots de passe ne correspondent pas";
+
+  Class<?>[] groups() default {};
+
+  Class<? extends Payload>[] payload() default {};
 }

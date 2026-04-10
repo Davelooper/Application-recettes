@@ -2,21 +2,19 @@ package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.mapstruct.factory.Mappers;
-import org.springframework.test.util.ReflectionTestUtils;
-
 import com.davelooper.backend.dtos.RecipeCreateRequestDTO;
 import com.davelooper.backend.dtos.RecipeFullResponseDTO;
 import com.davelooper.backend.dtos.RecipeSummaryResponseDTO;
 import com.davelooper.backend.dtos.RecipeUpdateRequestDTO;
 import com.davelooper.backend.entities.Recipe;
 import com.davelooper.backend.entities.User;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.mapstruct.factory.Mappers;
+import org.springframework.test.util.ReflectionTestUtils;
 
 @DisplayName("Unit Tests - RecipeMapper")
 class RecipeMapperTest {
@@ -55,8 +53,14 @@ class RecipeMapperTest {
     // GIVEN
     User author = User.builder().id(99L).username("chef").build();
     Recipe entity =
-        Recipe.builder().id(1L).title("Tarte").user(author).recipeIngredients(new ArrayList<>())
-            .recipeSteps(new ArrayList<>()).createdAt(LocalDateTime.now()).build();
+        Recipe.builder()
+            .id(1L)
+            .title("Tarte")
+            .user(author)
+            .recipeIngredients(new ArrayList<>())
+            .recipeSteps(new ArrayList<>())
+            .createdAt(LocalDateTime.now())
+            .build();
 
     // WHEN
     RecipeFullResponseDTO response = mapper.toFullResponseDTO(entity);
@@ -71,7 +75,7 @@ class RecipeMapperTest {
   void shouldMapCreateToEntity() {
     // GIVEN
     RecipeCreateRequestDTO request =
-      new RecipeCreateRequestDTO("Pizza", "Belle pizza", 4, 2, 20, 15, 10L, List.of(), List.of());
+        new RecipeCreateRequestDTO("Pizza", "Belle pizza", 4, 2, 20, 15, 10L, List.of(), List.of());
 
     // WHEN
     Recipe entity = mapper.toEntity(request);

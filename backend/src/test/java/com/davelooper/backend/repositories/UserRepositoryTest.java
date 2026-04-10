@@ -2,6 +2,8 @@ package com.davelooper.backend.repositories;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+
+import com.davelooper.backend.entities.User;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -15,7 +17,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import com.davelooper.backend.entities.User;
 
 @DataJpaTest
 @Testcontainers
@@ -23,19 +24,21 @@ import com.davelooper.backend.entities.User;
 @DisplayName("Tests du Repository User")
 class UserRepositoryTest {
 
-  @Container
-  @ServiceConnection
+  @Container @ServiceConnection
   static PostgreSQLContainer<?> postgres =
       new PostgreSQLContainer<>(DockerImageName.parse("postgres:16-alpine"));
 
-  @Autowired
-  private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
   @Test
   @DisplayName("Doit enregistrer un utilisateur complet avec les valeurs par défaut")
   void shouldSaveFullUser() {
-    User user = User.builder().email("test@example.com").passwordHash("hashed_password_123")
-        .username("JohnDoe").build();
+    User user =
+        User.builder()
+            .email("test@example.com")
+            .passwordHash("hashed_password_123")
+            .username("JohnDoe")
+            .build();
 
     User saved = userRepository.saveAndFlush(user);
 
@@ -87,8 +90,9 @@ class UserRepositoryTest {
     @DisplayName("createdAt ne doit pas être mis à jour lors d'un update")
     void shouldNotUpdateCreatedAt() throws InterruptedException {
       // 1. Sauvegarde initiale
-      User user = userRepository
-          .saveAndFlush(User.builder().email("audit@ex.com").passwordHash("h1").build());
+      User user =
+          userRepository.saveAndFlush(
+              User.builder().email("audit@ex.com").passwordHash("h1").build());
 
       LocalDateTime originalDate = user.getCreatedAt();
 
@@ -107,8 +111,9 @@ class UserRepositoryTest {
     @DisplayName("passwordHash en TEXT doit accepter de très longues chaînes")
     void shouldAcceptVeryLongPasswordHash() {
       String veryLongHash = "h".repeat(3000);
-      User user = userRepository
-          .saveAndFlush(User.builder().email("longhash@ex.com").passwordHash(veryLongHash).build());
+      User user =
+          userRepository.saveAndFlush(
+              User.builder().email("longhash@ex.com").passwordHash(veryLongHash).build());
 
       assertThat(userRepository.findById(user.getId()).get().getPasswordHash().length())
           .isEqualTo(3000);

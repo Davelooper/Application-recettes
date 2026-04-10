@@ -2,6 +2,12 @@ package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+
+import com.davelooper.backend.dtos.IngredientCreateRequestDTO;
+import com.davelooper.backend.dtos.IngredientResponseDTO;
+import com.davelooper.backend.dtos.SeasonalityResponseDTO;
+import com.davelooper.backend.entities.Ingredient;
+import com.davelooper.backend.entities.Seasonality;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,11 +16,6 @@ import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
-import com.davelooper.backend.dtos.IngredientCreateRequestDTO;
-import com.davelooper.backend.dtos.IngredientResponseDTO;
-import com.davelooper.backend.dtos.SeasonalityResponseDTO;
-import com.davelooper.backend.entities.Ingredient;
-import com.davelooper.backend.entities.Seasonality;
 
 @DisplayName("Unit Tests - IngredientMapper")
 class IngredientMapperTest {
@@ -57,8 +58,13 @@ class IngredientMapperTest {
     Seasonality s2 =
         Seasonality.builder().id(2L).periodName("Automne").startMonth(9).endMonth(11).build();
 
-    Ingredient entity = Ingredient.builder().id(10L).name("Courge").imageUrl("uploads/courge.png")
-        .seasonalities(new HashSet<>(List.of(s1, s2))).build();
+    Ingredient entity =
+        Ingredient.builder()
+            .id(10L)
+            .name("Courge")
+            .imageUrl("uploads/courge.png")
+            .seasonalities(new HashSet<>(List.of(s1, s2)))
+            .build();
 
     // WHEN
     IngredientResponseDTO response = mapper.toResponse(entity);
@@ -70,7 +76,8 @@ class IngredientMapperTest {
 
     // Vérification de la délégation au SeasonalityMapper
     assertThat(response.seasonalities()).hasSize(2);
-    assertThat(response.seasonalities()).extracting(SeasonalityResponseDTO::periodName)
+    assertThat(response.seasonalities())
+        .extracting(SeasonalityResponseDTO::periodName)
         .containsExactlyInAnyOrder("Été", "Automne");
   }
 
