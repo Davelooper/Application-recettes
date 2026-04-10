@@ -1,11 +1,12 @@
 package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.davelooper.backend.dtos.SeasonalityResponseDTO;
+import com.davelooper.backend.entities.Seasonality;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import com.davelooper.backend.dtos.SeasonalityResponseDTO;
-import com.davelooper.backend.entities.Seasonality;
 
 @DisplayName("Unit Tests - SeasonalityMapper")
 class SeasonalityMapperTest {

@@ -1,17 +1,14 @@
 package com.davelooper.backend.seeds;
 
+import com.davelooper.backend.entities.User;
+import com.davelooper.backend.repositories.UserRepository;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-
-import org.springframework.stereotype.Component;
-
-import com.davelooper.backend.entities.User;
-import com.davelooper.backend.repositories.UserRepository;
-
 import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
@@ -27,20 +24,26 @@ public class UserSeeder implements Seeder {
 
       // 1. Création d'un compte admin fixe pour le développement
       // Note : En attendant Spring Security, on stocke le texte en clair
-      userRepository.save(User.builder()
-          .email("admin@test.com")
-          .username("admin")
-          .passwordHash("admin123")
-          .role(User.Role.ADMIN)
-          .build());
+      userRepository.save(
+          User.builder()
+              .email("admin@test.com")
+              .username("admin")
+              .passwordHash("admin123")
+              .role(User.Role.ADMIN)
+              .build());
 
       // 2. Création de 10 utilisateurs aléatoires
-      List<User> randomUsers = IntStream.range(0, 10).mapToObj(i -> User.builder()
-          .email(faker.internet().emailAddress())
-          .username(faker.internet().username())
-          .passwordHash("password_hash_" + i)
-          .role(User.Role.STANDARD)
-          .build()).collect(Collectors.toList());
+      List<User> randomUsers =
+          IntStream.range(0, 10)
+              .mapToObj(
+                  i ->
+                      User.builder()
+                          .email(faker.internet().emailAddress())
+                          .username(faker.internet().username())
+                          .passwordHash("password_hash_" + i)
+                          .role(User.Role.STANDARD)
+                          .build())
+              .collect(Collectors.toList());
 
       userRepository.saveAll(randomUsers);
     }

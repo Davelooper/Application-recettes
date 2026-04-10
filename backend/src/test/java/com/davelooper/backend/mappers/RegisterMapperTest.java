@@ -1,13 +1,14 @@
 package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+import com.davelooper.backend.dtos.RegisterResponseDTO;
+import com.davelooper.backend.entities.User;
 import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
-import com.davelooper.backend.dtos.RegisterRequestDTO;
-import com.davelooper.backend.dtos.RegisterResponseDTO;
-import com.davelooper.backend.entities.User;
 
 @DisplayName("Unit Tests - RegisterMapper")
 class RegisterMapperTest {
@@ -31,10 +32,10 @@ class RegisterMapperTest {
 
     // VERIFICATION DES SECURITES
     assertThat(entity.getPasswordHash()).isNull(); // Le mapper doit ignorer le mot de passe en
-                                                   // clair
+    // clair
     assertThat(entity.getId()).isNull(); // L'ID ne doit pas être mappé depuis la requête
     assertThat(entity.getRole()).isEqualTo("standard"); // Le rôle a une valeur par défaut dans
-                                                        // l'entité
+    // l'entité
   }
 
   @Test
@@ -42,11 +43,15 @@ class RegisterMapperTest {
   void shouldMapEntityToResponse() {
     // GIVEN
     LocalDateTime now = LocalDateTime.now();
-    User entity = User.builder().id(1L).email("test@davelooper.com").username("DaveLooper")
-        .passwordHash("$2a$12$hashedpassword") // Donnée sensible
-        .role(User.Role.ADMIN).createdAt(now).build();
-
-
+    User entity =
+        User.builder()
+            .id(1L)
+            .email("test@davelooper.com")
+            .username("DaveLooper")
+            .passwordHash("$2a$12$hashedpassword") // Donnée sensible
+            .role(User.Role.ADMIN)
+            .createdAt(now)
+            .build();
 
     // WHEN
     RegisterResponseDTO response = mapper.toResponse(entity);

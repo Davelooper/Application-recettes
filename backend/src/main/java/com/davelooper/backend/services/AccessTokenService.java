@@ -1,18 +1,15 @@
 package com.davelooper.backend.services;
 
+import com.davelooper.backend.entities.User;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import com.davelooper.backend.entities.User;
-
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +33,15 @@ public class AccessTokenService {
     return Jwts.builder()
         .subject(String.valueOf(user.getId()))
         .issuer(issuer)
-        .audience().add(audience).and()
+        .audience()
+        .add(audience)
+        .and()
         .issuedAt(Date.from(now))
         .expiration(Date.from(expiration))
         .id(UUID.randomUUID().toString())
         .claim("role", user.getRole().name())
-        .signWith(Keys.hmacShaKeyFor(accessTokenSecret.getBytes(StandardCharsets.UTF_8)), Jwts.SIG.HS256)
+        .signWith(
+            Keys.hmacShaKeyFor(accessTokenSecret.getBytes(StandardCharsets.UTF_8)), Jwts.SIG.HS256)
         .compact();
   }
 }

@@ -1,7 +1,5 @@
 package com.davelooper.backend.entities;
 
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +9,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,7 +39,9 @@ public class Ingredient {
   private String imageUrl;
 
   @ManyToMany
-  @JoinTable(name = "ingredient_seasons", joinColumns = @JoinColumn(name = "ingredient_id"),
+  @JoinTable(
+      name = "ingredient_seasons",
+      joinColumns = @JoinColumn(name = "ingredient_id"),
       inverseJoinColumns = @JoinColumn(name = "seasonality_id"))
   @Builder.Default
   @ToString.Exclude

@@ -1,16 +1,14 @@
 package com.davelooper.backend.services;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.davelooper.backend.dtos.RegisterRequestDTO;
 import com.davelooper.backend.dtos.RegisterResponseDTO;
 import com.davelooper.backend.entities.User;
 import com.davelooper.backend.mappers.RegisterMapper;
 import com.davelooper.backend.repositories.UserRepository;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,5 +33,4 @@ public class UserService {
 
     return registerMapper.toResponse(savedUser);
   }
-
 }

@@ -1,6 +1,7 @@
 package com.davelooper.backend;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 import java.sql.Connection;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
@@ -18,12 +19,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 class DatabaseConnectionTest {
 
   // On utilise l'image postgres officielle
-  @Container
-  @ServiceConnection
+  @Container @ServiceConnection
   static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:16-alpine");
 
-  @Autowired
-  private DataSource dataSource;
+  @Autowired private DataSource dataSource;
 
   @Test
   void testConnectionIsEstablished() throws Exception {
