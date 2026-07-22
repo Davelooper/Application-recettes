@@ -1,6 +1,6 @@
 # Aide-Mémoire (Cheat Sheet) des Commandes de Développement
 
-Ce document recense les commandes essentielles pour développer sur le projet, que vous soyez à l'intérieur du Dev Container (VS Code) ou sur votre machine hôte.
+Ce document recense les commandes essentielles pour développer sur le projet.
 
 ---
 
@@ -26,7 +26,7 @@ Ces commandes sont à exécuter dans un terminal **à la racine du projet**.
 ## 🐳 Commandes Docker (Makefile)
 
 Ces commandes contrôlent l'infrastructure (Base de données, API Conteneurisée).
-Elles sont principalement utiles depuis la machine **Hôte** (hors Dev Container), ou si vous avez besoin de redémarrer un service voisin.
+Elles servent à administrer les services Docker, notamment pour redémarrer un service voisin.
 
 | Action | Commande | Description |
 | :--- | :--- | :--- |

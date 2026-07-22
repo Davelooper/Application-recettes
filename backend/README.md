@@ -19,7 +19,7 @@ Cela permet un cycle de developpement rapide sans reconstruire l'image Docker a 
 
 ## Fichier d'environnement
 
-Le mode developpement Docker, y compris le Dev Container VS Code, utilise le fichier `.env.dev` situe a la racine du projet.
+Le mode developpement Docker utilise le fichier `.env.dev` situe a la racine du projet.
 Le mode demo utilise `.env.demo` et le mode prod-like utilise `.env.prod`.
 
 ## Pre-requis
