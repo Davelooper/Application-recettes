@@ -11,3 +11,7 @@ bin/
 !.env.example
 !.env.demo
 !.env.dev
+
+# Configuration locale SDKMAN
+.sdkmanrc
+.sdkman/
