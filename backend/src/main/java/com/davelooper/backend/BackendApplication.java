@@ -12,7 +12,9 @@ public class BackendApplication {
     try {
       SpringApplication.run(BackendApplication.class, args);
     } catch (Exception ex) {
-      log.error("Application startup failed; database connection or Liquibase migration may have failed", ex);
+      log.error(
+          "Application startup failed; database connection or Liquibase migration may have failed",
+          ex);
       throw ex;
     }
   }
