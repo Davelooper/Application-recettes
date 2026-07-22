@@ -1,6 +1,7 @@
 .vscode
 *.zip
 *.log
+logs/
 .DS_Store
 .idea/
 *.iml
