@@ -1,13 +1,21 @@
 package com.davelooper.backend.services;
 
-import com.davelooper.backend.dtos.LoginRequestDTO;
-import com.davelooper.backend.dtos.LoginResponseDTO;
-import com.davelooper.backend.entities.User;
-import com.davelooper.backend.mappers.LoginMapper;
-import com.davelooper.backend.repositories.UserRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.Objects;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.davelooper.backend.dtos.LoginRequestDTO;
+import com.davelooper.backend.dtos.LoginResponseDTO;
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+import com.davelooper.backend.dtos.RegisterResponseDTO;
+import com.davelooper.backend.entities.User;
+import com.davelooper.backend.exceptions.EmailAlreadyUsedException;
+import com.davelooper.backend.exceptions.InvalidCredentialsException;
+import com.davelooper.backend.exceptions.InvalidRegistrationException;
+import com.davelooper.backend.mappers.LoginMapper;
+import com.davelooper.backend.mappers.RegisterMapper;
+import com.davelooper.backend.repositories.UserRepository;
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -17,18 +25,40 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final LoginMapper loginMapper;
   private final AccessTokenService accessTokenService;
+  private final RegisterMapper registerMapper;
 
   public LoginResponseDTO login(LoginRequestDTO request) {
     User user =
         userRepository
             .findByEmail(request.email())
-            .orElseThrow(() -> new IllegalArgumentException("Email ou mot de passe incorrect."));
+            .orElseThrow(() -> new InvalidCredentialsException("Email ou mot de passe incorrect."));
 
     if (!passwordEncoder.matches(request.password(), user.getPasswordHash())) {
-      throw new IllegalArgumentException("Email ou mot de passe incorrect.");
+      throw new InvalidCredentialsException("Email ou mot de passe incorrect.");
     }
 
     return loginMapper.toResponse(user, accessTokenService.generateToken(user));
+  }
+
+  @Transactional
+  public RegisterResponseDTO register(RegisterRequestDTO request) {
+    if (userRepository.existsByEmail(request.email())) {
+      throw new EmailAlreadyUsedException();
+    }
+
+    if (!Objects.equals(request.password(), request.passwordConfirm())) {
+      throw new InvalidRegistrationException("Les deux mots de passe doivent correspondre.");
+    }
+
+    String passwordHash = passwordEncoder.encode(request.password());
+
+    User user = new User();
+    user.setEmail(request.email());
+    user.setUsername(request.username());
+    user.setPasswordHash(passwordHash);
+    User userSaved = userRepository.save(user);
+
+    return registerMapper.toResponse(userSaved);
   }
 
   // public RefreshResponseDTO refresh(RefreshRequestDTO request) {

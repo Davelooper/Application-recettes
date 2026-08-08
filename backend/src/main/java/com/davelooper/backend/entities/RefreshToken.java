@@ -1,6 +1,5 @@
 package com.davelooper.backend.entities;
 
-import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -11,6 +10,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,8 +20,8 @@ import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 @Table(
-  name = "refresh_tokens",
-  uniqueConstraints = {@UniqueConstraint(columnNames = {"token_hash"})})
+    name = "refresh_tokens",
+    uniqueConstraints = {@UniqueConstraint(columnNames = {"token_hash"})})
 @Getter
 @Setter
 @AllArgsConstructor

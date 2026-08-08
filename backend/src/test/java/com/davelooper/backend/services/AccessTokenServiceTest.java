@@ -1,6 +1,11 @@
 package com.davelooper.backend.services;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import com.davelooper.backend.entities.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,11 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import com.davelooper.backend.entities.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-
 
 @ExtendWith(MockitoExtension.class)
 public class AccessTokenServiceTest {
