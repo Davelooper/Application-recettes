@@ -2,13 +2,11 @@ package com.davelooper.backend.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-
 import com.davelooper.backend.dtos.RegisterRequestDTO;
-
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class PasswordMatchesValidatorTest {
 
@@ -41,8 +39,8 @@ class PasswordMatchesValidatorTest {
     // THEN
     assertThat(violations).hasSize(1);
     assertThat(violations.iterator().next().getPropertyPath().toString())
-      .isEqualTo("passwordConfirm");
+        .isEqualTo("passwordConfirm");
     assertThat(violations.iterator().next().getMessage())
-      .isEqualTo("Les deux mots de passe ne correspondent pas");
+        .isEqualTo("Les deux mots de passe ne correspondent pas");
   }
 }
