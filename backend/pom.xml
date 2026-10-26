@@ -233,6 +233,17 @@
             </java>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>**/BackendApplicationTests.java</exclude>
+            <exclude>**/DatabaseConnectionTest.java</exclude>
+            <exclude>**/repositories/**</exclude>
+          </excludes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>

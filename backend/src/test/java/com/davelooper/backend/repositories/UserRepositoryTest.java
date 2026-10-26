@@ -3,8 +3,8 @@ package com.davelooper.backend.repositories;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import com.davelooper.backend.entities.User;
 import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -17,6 +17,8 @@ import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
+
+import com.davelooper.backend.entities.User;
 
 @DataJpaTest
 @Testcontainers
@@ -43,7 +45,7 @@ class UserRepositoryTest {
     User saved = userRepository.saveAndFlush(user);
 
     assertThat(saved.getId()).isNotNull();
-    assertThat(saved.getRole()).isEqualTo("standard"); // Vérifie le @Builder.Default
+    assertThat(saved.getRole()).isEqualTo(User.Role.STANDARD);
     assertThat(saved.getCreatedAt()).isNotNull(); // Vérifie le @CreationTimestamp
   }
 

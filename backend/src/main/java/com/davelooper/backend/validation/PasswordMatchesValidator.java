@@ -1,6 +1,7 @@
 package com.davelooper.backend.validation;
 
 import com.davelooper.backend.dtos.RegisterRequestDTO;
+
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -22,9 +23,9 @@ public class PasswordMatchesValidator
 
     context.disableDefaultConstraintViolation();
     context
-        .buildConstraintViolationWithTemplate("Les deux mots de passe ne correspondent pas")
-        .addPropertyNode("passwordConfirm")
-        .addConstraintViolation();
+      .buildConstraintViolationWithTemplate("Les deux mots de passe ne correspondent pas")
+      .addPropertyNode("passwordConfirm")
+      .addConstraintViolation();
 
     return false;
   }

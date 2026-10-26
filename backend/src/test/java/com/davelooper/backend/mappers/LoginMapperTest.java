@@ -2,12 +2,14 @@ package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.davelooper.backend.dtos.LoginResponseDTO;
-import com.davelooper.backend.entities.User;
 import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+
+import com.davelooper.backend.dtos.LoginResponseDTO;
+import com.davelooper.backend.entities.User;
 
 @DisplayName("Unit Tests - LoginMapper")
 public class LoginMapperTest {
@@ -33,7 +35,7 @@ public class LoginMapperTest {
     assertThat(response.id()).isEqualTo(entity.getId());
     assertThat(response.email()).isEqualTo(entity.getEmail());
     assertThat(response.username()).isEqualTo(entity.getUsername());
-    assertThat(response.role()).isEqualTo(entity.getRole());
+    assertThat(response.role()).isEqualTo(entity.getRole().name());
     assertThat(response.token()).isEqualTo("test");
   }
 }

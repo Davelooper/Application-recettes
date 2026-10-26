@@ -2,19 +2,17 @@ package com.davelooper.backend.validation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.davelooper.backend.dtos.RegisterRequestDTO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+
+import jakarta.validation.Validation;
+import jakarta.validation.Validator;
+
 class PasswordMatchesValidatorTest {
 
-  private PasswordMatchesValidator validator;
-
-  @BeforeEach
-  void setUp() {
-    validator = new PasswordMatchesValidator();
-  }
+  private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
   @Test
   @DisplayName("Doit être valide quand les mots de passe sont identiques")
@@ -24,9 +22,7 @@ class PasswordMatchesValidatorTest {
         new RegisterRequestDTO("test@mail.fr", "UserTest", "secret123", "secret123");
 
     // WHEN
-    boolean isValid =
-        validator.isValid(
-            dto, null); // On passe null car on n'utilise pas le ConstraintValidatorContext
+    boolean isValid = validator.validate(dto).isEmpty();
 
     // THEN
     assertThat(isValid).isTrue();
@@ -40,9 +36,13 @@ class PasswordMatchesValidatorTest {
         new RegisterRequestDTO("test@mail.fr", "UserTest", "secret123", "motdepassedifferent");
 
     // WHEN
-    boolean isValid = validator.isValid(dto, null);
+    var violations = validator.validate(dto);
 
     // THEN
-    assertThat(isValid).isFalse();
+    assertThat(violations).hasSize(1);
+    assertThat(violations.iterator().next().getPropertyPath().toString())
+      .isEqualTo("passwordConfirm");
+    assertThat(violations.iterator().next().getMessage())
+      .isEqualTo("Les deux mots de passe ne correspondent pas");
   }
 }

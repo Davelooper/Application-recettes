@@ -2,13 +2,15 @@ package com.davelooper.backend.mappers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.davelooper.backend.dtos.RegisterRequestDTO;
-import com.davelooper.backend.dtos.RegisterResponseDTO;
-import com.davelooper.backend.entities.User;
 import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mapstruct.factory.Mappers;
+
+import com.davelooper.backend.dtos.RegisterRequestDTO;
+import com.davelooper.backend.dtos.RegisterResponseDTO;
+import com.davelooper.backend.entities.User;
 
 @DisplayName("Unit Tests - RegisterMapper")
 class RegisterMapperTest {
@@ -34,8 +36,7 @@ class RegisterMapperTest {
     assertThat(entity.getPasswordHash()).isNull(); // Le mapper doit ignorer le mot de passe en
     // clair
     assertThat(entity.getId()).isNull(); // L'ID ne doit pas être mappé depuis la requête
-    assertThat(entity.getRole()).isEqualTo("standard"); // Le rôle a une valeur par défaut dans
-    // l'entité
+    assertThat(entity.getRole()).isEqualTo(User.Role.STANDARD);
   }
 
   @Test
@@ -60,10 +61,8 @@ class RegisterMapperTest {
     assertThat(response.id()).isEqualTo(entity.getId());
     assertThat(response.email()).isEqualTo(entity.getEmail());
     assertThat(response.username()).isEqualTo(entity.getUsername());
-    assertThat(response.role()).isEqualTo(entity.getRole());
+    assertThat(response.role()).isEqualTo(entity.getRole().name());
     assertThat(response.createdAt()).isEqualTo(entity.getCreatedAt());
 
-    // La preuve ultime : le record n'a même pas de champ pour le mot de passe
-    // (Le test ne compilerait pas si on essayait d'y accéder)
   }
 }
