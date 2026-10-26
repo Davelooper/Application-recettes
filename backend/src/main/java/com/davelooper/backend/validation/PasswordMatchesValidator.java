@@ -12,16 +12,20 @@ public class PasswordMatchesValidator
 
   @Override
   public boolean isValid(RegisterRequestDTO dto, ConstraintValidatorContext context) {
-    if (dto == null) {
+    if (dto == null || dto.password() == null || dto.passwordConfirm() == null) {
+      return true; // @NotBlank gère l'absence
+    }
+
+    if (dto.password().equals(dto.passwordConfirm())) {
       return true;
     }
 
-    // Si les deux sont nuls en même temps, ce n'est pas ce validateur qui doit bloquer (c'est
-    // @NotBlank)
-    if (dto.password() == null || dto.passwordConfirm() == null) {
-      return false;
-    }
+    context.disableDefaultConstraintViolation();
+    context
+        .buildConstraintViolationWithTemplate("Les deux mots de passe ne correspondent pas")
+        .addPropertyNode("passwordConfirm")
+        .addConstraintViolation();
 
-    return dto.password().equals(dto.passwordConfirm());
+    return false;
   }
 }

@@ -13,5 +13,13 @@ public record RegisterRequestDTO(
     @Size(max = 100) String username,
     @NotBlank(message = "Le mot de passe est requis")
         @Size(min = 8, message = "Le mot de passe doit contenir au moins 8 caractères")
-        String password, // Note : "password" en clair, pas "passwordHash"
-    @NotBlank(message = "La confirmation du mot de passe est requise") String passwordConfirm) {}
+        String password, // Note
+    // :
+    // "password"
+    // en
+    // clair,
+    // pas
+    // "passwordHash"
+    @NotBlank(message = "La confirmation du mot de passe est requise")
+        @Size(min = 8, message = "La confirmation doit contenir au moins 8 caractères")
+        String passwordConfirm) {}
