@@ -75,4 +75,18 @@ public class GlobalExceptionHandler {
         "detail",
         ex.getMessage());
   }
+
+  @ExceptionHandler(UnauthorizedException.class)
+  @ResponseStatus(HttpStatus.UNAUTHORIZED)
+  public Map<String, Object> handleUnauthorized(UnauthorizedException ex) {
+    return Map.of(
+        "type",
+        "/problems/unauthorized",
+        "title",
+        "Non autorisé",
+        "status",
+        HttpStatus.UNAUTHORIZED.value(),
+        "detail",
+        ex.getMessage());
+  }
 }

@@ -54,4 +54,16 @@ public class RefreshToken {
   @Column(name = "created_at", updatable = false)
   @CreationTimestamp
   private LocalDateTime createdAt;
+
+  public boolean isRevoked() {
+    return this.revokedAt != null;
+  }
+
+  public boolean isExpired() {
+    return this.expiresAt != null && this.expiresAt.isBefore(LocalDateTime.now());
+  }
+
+  public boolean isValid() {
+    return !isRevoked() && !isExpired();
+  }
 }
