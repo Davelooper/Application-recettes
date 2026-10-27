@@ -1,22 +1,19 @@
 package com.davelooper.backend.services;
 
+import com.davelooper.backend.entities.RefreshToken;
+import com.davelooper.backend.entities.User;
+import com.davelooper.backend.exceptions.UnauthorizedException;
+import com.davelooper.backend.repositories.RefreshTokenRepository;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HexFormat;
-
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.davelooper.backend.entities.RefreshToken;
-import com.davelooper.backend.entities.User;
-import com.davelooper.backend.exceptions.UnauthorizedException;
-import com.davelooper.backend.repositories.RefreshTokenRepository;
-
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
@@ -27,11 +24,9 @@ public class RefreshTokenService {
 
   private final RefreshTokenRepository refreshTokenRepository;
 
-  public record GeneratedRefreshToken(String rawToken, RefreshToken entity) {
-  }
+  public record GeneratedRefreshToken(String rawToken, RefreshToken entity) {}
 
-  public record RotationResult(User user, String newRawToken) {
-  }
+  public record RotationResult(User user, String newRawToken) {}
 
   public String generateToken() {
     return java.util.Base64.getUrlEncoder()
@@ -54,11 +49,8 @@ public class RefreshTokenService {
     String token = this.generateToken();
     String hash = this.hashToken(token);
     LocalDateTime expiresAt = LocalDateTime.now().plus(Duration.ofMillis(refreshTokenExpirationMs));
-    RefreshToken refreshToken = RefreshToken.builder()
-        .user(user)
-        .tokenHash(hash)
-        .expiresAt(expiresAt)
-        .build();
+    RefreshToken refreshToken =
+        RefreshToken.builder().user(user).tokenHash(hash).expiresAt(expiresAt).build();
     RefreshToken saved = refreshTokenRepository.save(refreshToken);
 
     return new GeneratedRefreshToken(token, saved);
@@ -68,13 +60,17 @@ public class RefreshTokenService {
   public RotationResult rotateRefreshToken(String rawRefreshToken) {
     String tokenHash = hashToken(rawRefreshToken);
 
-    RefreshToken storedToken = refreshTokenRepository.findByTokenHash(tokenHash)
-        .orElseThrow(() -> new UnauthorizedException("Token de rafraîchissement invalide."));
+    RefreshToken storedToken =
+        refreshTokenRepository
+            .findByTokenHash(tokenHash)
+            .orElseThrow(() -> new UnauthorizedException("Token de rafraîchissement invalide."));
 
     User user = storedToken.getUser();
 
     if (storedToken.isRevoked()) {
-      log.warn("Tentative de réutilisation d'un refresh token révoqué pour l'utilisateur ID: {}", user.getId());
+      log.warn(
+          "Tentative de réutilisation d'un refresh token révoqué pour l'utilisateur ID: {}",
+          user.getId());
       refreshTokenRepository.revokeAllByUser(user, LocalDateTime.now());
       throw new UnauthorizedException(
           "Token déjà utilisé ou révoqué. Vos sessions ont été invalidées par mesure de sécurité.");
@@ -96,11 +92,14 @@ public class RefreshTokenService {
   @Transactional
   public void revoke(String rawRefreshToken) {
     String tokenHash = hashToken(rawRefreshToken);
-    refreshTokenRepository.findByTokenHash(tokenHash).ifPresent(token -> {
-      if (!token.isRevoked()) {
-        token.setRevokedAt(LocalDateTime.now());
-        refreshTokenRepository.save(token);
-      }
-    });
+    refreshTokenRepository
+        .findByTokenHash(tokenHash)
+        .ifPresent(
+            token -> {
+              if (!token.isRevoked()) {
+                token.setRevokedAt(LocalDateTime.now());
+                refreshTokenRepository.save(token);
+              }
+            });
   }
 }
