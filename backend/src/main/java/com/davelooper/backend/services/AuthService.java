@@ -13,6 +13,7 @@ import com.davelooper.backend.exceptions.InvalidRegistrationException;
 import com.davelooper.backend.mappers.LoginMapper;
 import com.davelooper.backend.mappers.RegisterMapper;
 import com.davelooper.backend.repositories.UserRepository;
+import com.davelooper.backend.services.RefreshTokenService.GeneratedRefreshToken;
 import com.davelooper.backend.services.RefreshTokenService.RotationResult;
 import java.util.Objects;
 import lombok.RequiredArgsConstructor;
@@ -41,7 +42,9 @@ public class AuthService {
       throw new InvalidCredentialsException("Email ou mot de passe incorrect.");
     }
 
-    return loginMapper.toResponse(user, accessTokenService.generateToken(user));
+    GeneratedRefreshToken refreshToken = refreshTokenService.create(user);
+    return loginMapper.toResponse(
+        user, accessTokenService.generateToken(user), refreshToken.rawToken());
   }
 
   @Transactional

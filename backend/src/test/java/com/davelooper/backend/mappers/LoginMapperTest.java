@@ -28,12 +28,13 @@ public class LoginMapperTest {
             .createdAt(now)
             .build();
 
-    LoginResponseDTO response = mapper.toResponse(entity, "test");
+    LoginResponseDTO response = mapper.toResponse(entity, "test-access", "test-refresh");
 
     assertThat(response.id()).isEqualTo(entity.getId());
     assertThat(response.email()).isEqualTo(entity.getEmail());
     assertThat(response.username()).isEqualTo(entity.getUsername());
     assertThat(response.role()).isEqualTo(entity.getRole().name());
-    assertThat(response.token()).isEqualTo("test");
+    assertThat(response.token()).isEqualTo("test-access");
+    assertThat(response.refreshToken()).isEqualTo("test-refresh");
   }
 }

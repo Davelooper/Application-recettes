@@ -1,3 +1,4 @@
 package com.davelooper.backend.dtos;
 
-public record LoginResponseDTO(String token, Long id, String username, String email, String role) {}
+public record LoginResponseDTO(
+    String token, Long id, String username, String email, String role, String refreshToken) {}

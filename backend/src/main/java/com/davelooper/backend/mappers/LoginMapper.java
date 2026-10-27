@@ -11,7 +11,7 @@ import org.mapstruct.Mappings;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface LoginMapper {
 
-  LoginResponseDTO toResponse(User user, String token);
+  LoginResponseDTO toResponse(User user, String token, String refreshToken);
 
   @Mappings({
     @Mapping(target = "id", ignore = true),
