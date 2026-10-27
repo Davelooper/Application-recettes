@@ -2,6 +2,7 @@ package com.davelooper.backend.controllers;
 
 import com.davelooper.backend.dtos.LoginRequestDTO;
 import com.davelooper.backend.dtos.LoginResponseDTO;
+import com.davelooper.backend.dtos.LogoutRequestDTO;
 import com.davelooper.backend.dtos.RefreshRequestDTO;
 import com.davelooper.backend.dtos.RefreshResponseDTO;
 import com.davelooper.backend.dtos.RegisterRequestDTO;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,5 +39,11 @@ public class AuthController {
   @PostMapping("/refresh")
   public RefreshResponseDTO refresh(@Valid @RequestBody RefreshRequestDTO request) {
     return authService.refresh(request);
+  }
+
+  @PostMapping("/logout")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void logout(@Valid @RequestBody LogoutRequestDTO request) {
+    authService.logout(request);
   }
 }

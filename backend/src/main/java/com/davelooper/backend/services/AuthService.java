@@ -2,6 +2,7 @@ package com.davelooper.backend.services;
 
 import com.davelooper.backend.dtos.LoginRequestDTO;
 import com.davelooper.backend.dtos.LoginResponseDTO;
+import com.davelooper.backend.dtos.LogoutRequestDTO;
 import com.davelooper.backend.dtos.RefreshRequestDTO;
 import com.davelooper.backend.dtos.RefreshResponseDTO;
 import com.davelooper.backend.dtos.RegisterRequestDTO;
@@ -74,30 +75,7 @@ public class AuthService {
     return new RefreshResponseDTO(newToken, resultRefresh.newRawToken());
   }
 
-  // public void logout(LogoutRequestDTO request) {
-
-  // // 1. Lire le refresh token envoyé par le client
-  // String providedRefreshToken = request.refreshToken();
-
-  // // 2. Rechercher le refresh token en base
-  // RefreshToken storedRefreshToken = refreshTokenService
-  // .findByToken(providedRefreshToken)
-  // .orElseThrow(() -> new UnauthorizedException("Invalid refresh token"));
-
-  // // 3. Vérifier s'il est déjà révoqué
-  // if (storedRefreshToken.isRevoked()) {
-  // throw new UnauthorizedException("Refresh token has already been revoked");
-  // }
-
-  // // 4. Vérifier s'il est expiré
-  // if (refreshTokenService.isExpired(storedRefreshToken)) {
-  // throw new UnauthorizedException("Refresh token has expired");
-  // }
-
-  // // 5. Révoquer le refresh token
-  // refreshTokenService.revoke(storedRefreshToken);
-
-  // // 6. Fin : aucun retour nécessaire
-  // }
-
+  public void logout(LogoutRequestDTO request) {
+    refreshTokenService.revoke(request.refreshToken());
+  }
 }
