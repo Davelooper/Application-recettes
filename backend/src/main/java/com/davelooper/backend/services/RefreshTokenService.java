@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.davelooper.backend.entities.RefreshToken;
 import com.davelooper.backend.entities.User;
+import com.davelooper.backend.exceptions.UnauthorizedException;
 import com.davelooper.backend.repositories.RefreshTokenRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -61,5 +62,45 @@ public class RefreshTokenService {
     RefreshToken saved = refreshTokenRepository.save(refreshToken);
 
     return new GeneratedRefreshToken(token, saved);
+  }
+
+  @Transactional
+  public RotationResult rotateRefreshToken(String rawRefreshToken) {
+    String tokenHash = hashToken(rawRefreshToken);
+
+    RefreshToken storedToken = refreshTokenRepository.findByTokenHash(tokenHash)
+        .orElseThrow(() -> new UnauthorizedException("Token de rafraîchissement invalide."));
+
+    User user = storedToken.getUser();
+
+    if (storedToken.isRevoked()) {
+      log.warn("Tentative de réutilisation d'un refresh token révoqué pour l'utilisateur ID: {}", user.getId());
+      refreshTokenRepository.revokeAllByUser(user, LocalDateTime.now());
+      throw new UnauthorizedException(
+          "Token déjà utilisé ou révoqué. Vos sessions ont été invalidées par mesure de sécurité.");
+    }
+
+    if (storedToken.isExpired()) {
+      throw new UnauthorizedException("Token de rafraîchissement expiré.");
+    }
+
+    GeneratedRefreshToken newGenerated = create(user);
+
+    storedToken.setRevokedAt(LocalDateTime.now());
+    storedToken.setReplacedByToken(newGenerated.entity());
+    refreshTokenRepository.save(storedToken);
+
+    return new RotationResult(user, newGenerated.rawToken());
+  }
+
+  @Transactional
+  public void revoke(String rawRefreshToken) {
+    String tokenHash = hashToken(rawRefreshToken);
+    refreshTokenRepository.findByTokenHash(tokenHash).ifPresent(token -> {
+      if (!token.isRevoked()) {
+        token.setRevokedAt(LocalDateTime.now());
+        refreshTokenRepository.save(token);
+      }
+    });
   }
 }
